@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
-export const Container = styled.div<{ width?: string | number; disabled?: boolean }>`
+export const Container = styled.div<{ disabled?: boolean; size?: 'small' | 'medium' | 'large' }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: ${({ width }) => (width ? (typeof width === 'number' ? `${width}px` : width) : '100%')};
+  width: ${({ size }) => (size === 'small' ? '240px' : size === 'large' ? '400px' : '320px')};
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
 `;
@@ -27,23 +27,71 @@ export const OptionalText = styled.span`
   color: #6b7280;
 `;
 
-export const InfoIconWrapper = styled.div`
+export const InfoIconWrapper = styled.div<{ 'data-tooltip'?: string }>`
   display: flex;
   align-items: center;
   color: #9ca3af;
+  position: relative;
+  cursor: help;
+  
   svg {
     width: 14px;
     height: 14px;
   }
+
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 6px;
+    padding: 6px 10px;
+    background-color: #1e293b;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 2px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: #1e293b transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  &:hover::after,
+  &:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
 `;
 
-export const InputWrapper = styled.div<{ height?: string | number; hasError?: boolean; disabled?: boolean }>`
+export const InputWrapper = styled.div<{ size?: 'small' | 'medium' | 'large'; hasError?: boolean; disabled?: boolean; customBorder?: string; customBorderRadius?: string | number }>`
   display: flex;
   align-items: center;
-  border: 1px solid ${({ hasError }) => (hasError ? '#ef4444' : '#cbd5e1')};
-  border-radius: 8px;
+  border: ${({ hasError, customBorder }) => customBorder ? customBorder : (hasError ? '1px solid #ef4444' : '1px solid #cbd5e1')};
+  border-radius: ${({ customBorderRadius }) => (customBorderRadius ? (typeof customBorderRadius === 'number' ? `${customBorderRadius}px` : customBorderRadius) : '8px')};
   background-color: ${({ disabled }) => (disabled ? '#f8fafc' : '#ffffff')};
-  height: ${({ height }) => (height ? (typeof height === 'number' ? `${height}px` : height) : '44px')};
+  height: ${({ size }) => (size === 'small' ? '36px' : size === 'large' ? '52px' : '44px')};
   transition: all 0.2s ease;
   overflow: hidden;
   

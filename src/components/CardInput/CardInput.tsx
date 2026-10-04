@@ -37,12 +37,13 @@ export const CardInput = forwardRef<HTMLInputElement, CardInputProps>(
     {
       label,
       hasLabel = true,
-      hasLabelInfo = true,
+      infoContent,
       isOptional,
       errorMessage,
       captionMessage,
-      width,
-      height = '44px',
+      size = 'medium',
+      border,
+      borderRadius,
       hasStartIcon = true,
       startIcon = <StartCardIcon />,
       hasEndIcon = true,
@@ -59,20 +60,20 @@ export const CardInput = forwardRef<HTMLInputElement, CardInputProps>(
     const message = errorMessage || captionMessage;
 
     return (
-      <S.Container width={width} className={className} disabled={disabled}>
+      <S.Container size={size} className={className} disabled={disabled}>
         {hasLabel && (label || isOptional) && (
           <S.LabelContainer>
             {label && <S.LabelText htmlFor={inputId}>{label}</S.LabelText>}
             {isOptional && <S.OptionalText>(Optional)</S.OptionalText>}
-            {hasLabelInfo && (
-              <S.InfoIconWrapper>
+            {infoContent && (
+              <S.InfoIconWrapper data-tooltip={infoContent}>
                 <InfoIcon />
               </S.InfoIconWrapper>
             )}
           </S.LabelContainer>
         )}
 
-        <S.InputWrapper height={height} hasError={hasError} disabled={disabled}>
+        <S.InputWrapper size={size} hasError={hasError} disabled={disabled} customBorder={border} customBorderRadius={borderRadius}>
           {hasStartIcon && startIcon && <S.StartIconWrapper>{startIcon}</S.StartIconWrapper>}
           <S.StyledInput ref={ref} id={inputId} disabled={disabled} {...rest} />
           {hasEndIcon && endIcon && <S.EndIconWrapper>{endIcon}</S.EndIconWrapper>}

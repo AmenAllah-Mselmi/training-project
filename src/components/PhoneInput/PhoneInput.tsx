@@ -86,12 +86,13 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
     {
       label,
       hasLabel = true,
-      hasLabelInfo = true,
+      infoContent,
       isOptional,
       errorMessage,
       captionMessage,
-      width,
-      height = '44px',
+      size = 'medium',
+      border,
+      borderRadius,
       className,
       id,
       disabled,
@@ -118,20 +119,20 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
     }, []);
 
     return (
-      <S.Container width={width} className={className} disabled={disabled}>
+      <S.Container size={size} className={className} disabled={disabled}>
         {hasLabel && (label || isOptional) && (
           <S.LabelContainer>
             {label && <S.LabelText htmlFor={inputId}>{label}</S.LabelText>}
             {isOptional && <S.OptionalText>(Optional)</S.OptionalText>}
-            {hasLabelInfo && (
-              <S.InfoIconWrapper>
+            {infoContent && (
+              <S.InfoIconWrapper data-tooltip={infoContent}>
                 <InfoIcon />
               </S.InfoIconWrapper>
             )}
           </S.LabelContainer>
         )}
 
-        <S.InputWrapper height={height} hasError={hasError} disabled={disabled}>
+        <S.InputWrapper size={size} hasError={hasError} disabled={disabled} customBorder={border} customBorderRadius={borderRadius}>
           <S.CountrySelectorWrapper ref={dropdownRef}>
             <S.CountrySelector 
               disabled={disabled}
